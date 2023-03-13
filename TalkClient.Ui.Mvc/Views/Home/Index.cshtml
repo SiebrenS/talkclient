@@ -1,0 +1,35 @@
+﻿@model ChatViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<form method="post" asp-action="CreateChannel">
+    <input type="text" placeholder="New Channel" name="Name" class="form-control"/>
+    <button type="submit" class="btn btn-outline-primary">Create</button>
+</form>
+
+@foreach (var channel in Model.Channels)
+{
+    var backgroundStyle = "";
+    var textStyle = "";
+    @if (channel.Name == Model.CurrentChannel)
+    {
+        backgroundStyle = "background-color:blue;";
+        textStyle = "color:white;";
+    }
+    <h1 style="@backgroundStyle"><a style="@textStyle" asp-action="Index" asp-route-channel="@channel.Name">@channel.Name</a></h1>
+}
+
+<form method="post" asp-action="CreateMessage">
+    <input type="hidden" name="Channel" value="@Model.CurrentChannel" />
+    <input type="text" placeholder="Author" name="Author" class="form-control"/>
+    <input type="text" placeholder="Message" name="Message" class="form-control"/>
+
+    <button type="submit" class="btn btn-outline-primary">Create</button>
+</form>
+
+@foreach (var message in Model.Messages)
+{
+    <div>[@message.CreateAt.ToString("dd/MM/yyyy HH:mm:ss")&gt;@message.Author] @message.Message</div>
+}
